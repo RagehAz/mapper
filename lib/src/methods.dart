@@ -706,7 +706,7 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static List<Map<String, dynamic>> removeMapFromMapsByIdField({
     @required List<Map<String, dynamic>> baseMaps,
     @required String mapIDToRemove,
@@ -740,7 +740,7 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static Map<String, dynamic> cleanNullPairs({
     @required Map<String, dynamic> map,
   }){
@@ -795,26 +795,46 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static Map<String, dynamic> cleanZeroValuesPairs({
     @required Map<String, dynamic> map,
   }){
-    Map<String, dynamic> _output = map;
+    Map<String, dynamic> _output;
 
-    final List<String> _keys = _output?.keys?.toList();
+    if (map != null){
 
-    if (checkCanLoopList(_keys) == true){
+      _output = {};
+      final List<String> _keys = map.keys.toList();
 
-      /// LOOP IN KEYS
-      for (final String _key in _keys){
-        ///  WHEN VALUE OF THIS KEY IS ZERO
-        if (_output[_key] == 0){
-          /// REMOVE THIS PAIR
-          _output = removePair(
+      for (final String key in _keys){
+
+        if (map[key] != 0){
+
+          if (map[key] is Map<String, dynamic>){
+            final Map<String, dynamic> _sub = cleanZeroValuesPairs(
+               map: map[key],
+            );
+            _output = insertPairInMap(
               map: _output,
-              fieldKey: _key,
-          );
+              key: key,
+              value: _sub,
+            );
+          }
+
+          else {
+            _output = insertPairInMap(
+              map: _output,
+              key: key,
+              value: map[key],
+            );
+          }
+
         }
+
+      }
+
+      if (_output.keys.isEmpty == true){
+        _output = null;
       }
 
     }
@@ -826,7 +846,7 @@ class Mapper {
   /// DYNAMIC LISTS CHECKERS
 
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkCanLoopList(List<dynamic> list) {
     bool _canLoop = false;
 
@@ -836,7 +856,7 @@ class Mapper {
     return _canLoop;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkListHasNullValue(List<dynamic> list){
     bool _hasNull = false;
 
@@ -849,7 +869,7 @@ class Mapper {
     return _hasNull;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkListsAreIdentical({
     @required List<dynamic> list1,
     @required List<dynamic> list2
@@ -877,8 +897,17 @@ class Mapper {
 
           if (list1[i] != list2[i]) {
             // blog('items at index ( $i ) do not match : ( ${list1[i]} ) <=> ( ${list2[i]} )');
-            _listsAreIdentical = false;
-            break;
+
+            if (list1[i].toString() == list2[i].toString()){
+              // blog('but they are equal when converted to string');
+              _listsAreIdentical = true;
+            }
+            else {
+              // blog('and they are not equal when converted to string');
+              _listsAreIdentical = false;
+              break;
+            }
+
           }
 
           else {
@@ -921,7 +950,7 @@ class Mapper {
   /// IDENTICAL MAPS CHECKERS
 
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkMapsAreIdentical({
     @required Map<String, dynamic> map1,
     @required Map<String, dynamic> map2,
@@ -1046,58 +1075,62 @@ class Mapper {
     return _mapsAreIdentical;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkMapsListsAreIdentical({
     @required List<Map<String, dynamic>> maps1,
     @required List<Map<String, dynamic>> maps2,
   }){
-    bool _listsAreIdentical = false;
 
-    if (maps1 == null && maps2 == null){
-      _listsAreIdentical = true;
-    }
+    /// OLD BULLSHIT
+    // bool _listsAreIdentical = false;
+    //
+    // if (maps1 == null && maps2 == null){
+    //   _listsAreIdentical = true;
+    // }
+    //
+    // else if (maps1?.isEmpty && maps2 == []){
+    //   _listsAreIdentical = true;
+    // }
+    //
+    // else if (checkCanLoopList(maps1) == true && checkCanLoopList(maps2) == true){
+    //
+    //   if (maps1.length != maps2.length) {
+    //     _listsAreIdentical = false;
+    //   }
+    //
+    //   else {
+    //     for (int i = 0; i < maps1.length; i++) {
+    //
+    //       final bool _mapsAreIdentical = checkMapsAreIdentical(
+    //         map1: maps1[i],
+    //         map2: maps2[i],
+    //       );
+    //
+    //       if (_mapsAreIdentical == false) {
+    //         // blog('items at index ( $i ) do not match : ( ${maps1[i]} ) <=> ( ${maps2[i]} )');
+    //         _listsAreIdentical = false;
+    //         break;
+    //       }
+    //
+    //       else {
+    //         _listsAreIdentical = true;
+    //       }
+    //
+    //     }
+    //   }
+    //
+    // }
+    //
+    // if (_listsAreIdentical == false){
+    //   blogMapsListsDifferences(
+    //     maps1: maps1,
+    //     maps2: maps2,
+    //     invoker: 'checkMapsListsAreIdentical',
+    //   );
+    // }
+    // return _listsAreIdentical;
 
-    else if (maps1 == [] && maps2 == []){
-      _listsAreIdentical = true;
-    }
-
-    else if (checkCanLoopList(maps1) == true && checkCanLoopList(maps2) == true){
-
-      if (maps1.length != maps2.length) {
-        _listsAreIdentical = false;
-      }
-
-      else {
-        for (int i = 0; i < maps1.length; i++) {
-
-          final bool _mapsAreIdentical = checkMapsAreIdentical(
-            map1: maps1[i],
-            map2: maps2[i],
-          );
-
-          if (_mapsAreIdentical == false) {
-            // blog('items at index ( $i ) do not match : ( ${maps1[i]} ) <=> ( ${maps2[i]} )');
-            _listsAreIdentical = false;
-            break;
-          }
-
-          else {
-            _listsAreIdentical = true;
-          }
-
-        }
-      }
-
-    }
-
-    if (_listsAreIdentical == false){
-      blogMapsListsDifferences(
-        maps1: maps1,
-        maps2: maps2,
-        invoker: 'checkMapsListsAreIdentical',
-      );
-    }
-    return _listsAreIdentical;
+    return checkListsAreIdentical(list1: maps1, list2: maps2);
 
   }
   // -----------------------------------------------------------------------------
@@ -1105,7 +1138,7 @@ class Mapper {
   /// MAP CONTAINS ?
 
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkMapsContainMapWithID({
     @required List<Map<String, dynamic>> maps,
     @required Map<String, dynamic> map,
@@ -1131,7 +1164,7 @@ class Mapper {
     return _include;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkMapsContainIdenticalMap({
     @required List<Map<String, dynamic>> maps,
     @required Map<String, dynamic> map,
@@ -1159,24 +1192,36 @@ class Mapper {
     return _contain;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static bool checkMapsContainValue({
-    @required List<Map<String, dynamic>> listOfMaps,
+    @required List<Map<String, dynamic>> maps,
     @required String field,
-    @required String value,
+    @required dynamic value,
   }) {
-    bool _listOfMapContainsTheValue;
+    bool _listOfMapContainsTheValue = false;
 
-    for (final Map<String, dynamic> map in listOfMaps) {
+    if (checkCanLoopList(maps) == true && value != null){
 
-      if (map[field] == value) {
-        _listOfMapContainsTheValue = true;
-        break;
-      }
+      for (final Map<String, dynamic> map in maps) {
 
-      else {
-        _listOfMapContainsTheValue = false;
-      }
+           if (map[field] == value) {
+             _listOfMapContainsTheValue = true;
+             break;
+           }
+
+           else {
+
+             if (map[field]?.toString() == value?.toString()){
+               _listOfMapContainsTheValue = true;
+               break;
+             }
+             else {
+               _listOfMapContainsTheValue = false;
+             }
+
+           }
+
+         }
 
     }
 

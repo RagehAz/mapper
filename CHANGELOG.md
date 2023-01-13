@@ -1,3 +1,7 @@
+## 0.0.4
+
+* fixed plenty of hidden cases and bugs thanks to ai
+
 ## 0.0.3
 
 * fixed replaceMapInMapsWithSameIDField method after adding ai generated tests
