@@ -522,58 +522,63 @@ void main() {
     expect(_cleaned, _expected);
   });
   // -----------------------------------------------------------------------------
-  /// AI GENERATED
-  test('cleanDuplicateMaps Test for empty input list', () {
-    final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
-    final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
-    expect(result, <Map<String, dynamic>>[]);
-  });
-  // --------------------
-  /// AI GENERATED
-  test('cleanDuplicateMaps Test for list with duplicate maps', () {
-    final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25},
-      {'name': 'John', 'age': 30}
-    ];
-    final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
-    expect(result, <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25}
-    ]);
-  });
-  // --------------------
-  /// AI GENERATED
-  test('cleanDuplicateMaps Test for list with no duplicate maps', () {
-    final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25},
-      {'name': 'Mike', 'age': 35}
-    ];
-    final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
-    expect(result, <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25},
-      {'name': 'Mike', 'age': 35}
-    ]);
-  });
-  // --------------------
-  /// AI GENERATED
-  test('cleanDuplicateMaps Test for list with duplicate maps but different keys', () {
-    final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25},
-      {'first_name': 'John', 'age': 30}
-    ];
-    final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
-    expect(result, <Map<String, dynamic>>[
-      {'name': 'John', 'age': 30},
-      {'name': 'Jane', 'age': 25},
-      {'first_name': 'John', 'age': 30}
-    ]);
+  group('cleanDuplicateMaps', () {
+    // --------------------
+    /// AI GENERATED
+    test('cleanDuplicateMaps Test for empty input list', () {
+      final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
+      final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
+      expect(result, <Map<String, dynamic>>[]);
+    });
+    // --------------------
+    /// AI GENERATED
+    test('cleanDuplicateMaps Test for list with duplicate maps', () {
+      final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25},
+        {'name': 'John', 'age': 30}
+      ];
+      final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
+      expect(result, <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25}
+      ]);
+    });
+    // --------------------
+    /// AI GENERATED
+    test('cleanDuplicateMaps Test for list with no duplicate maps', () {
+      final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25},
+        {'name': 'Mike', 'age': 35}
+      ];
+      final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
+      expect(result, <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25},
+        {'name': 'Mike', 'age': 35}
+      ]);
+    });
+    // --------------------
+    /// AI GENERATED
+    test('cleanDuplicateMaps Test for list with duplicate maps but different keys', () {
+      final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25},
+        {'first_name': 'John', 'age': 30}
+      ];
+      final List<Map<String, dynamic>> result = Mapper.cleanDuplicateMaps(maps: maps);
+      expect(result, <Map<String, dynamic>>[
+        {'name': 'John', 'age': 30},
+        {'name': 'Jane', 'age': 25},
+        {'first_name': 'John', 'age': 30}
+      ]);
+    });
   });
   // -----------------------------------------------------------------------------
-  /// AI GENERATED
+  group('cleanMapsOfDuplicateIDs', () {
+  // --------------------
+    /// AI GENERATED
   test('cleanMapsOfDuplicateIDs Test for empty input list', () {
     final List<Map<String, dynamic>> maps = <Map<String, dynamic>>[];
     const String idFieldName = 'id';
@@ -629,6 +634,89 @@ void main() {
       {'id': 1, 'name': 'John', 'age': 30},
       {'id': 2, 'name': 'Jane', 'age': 25}
     ]);
+  });
+  });
+  // -----------------------------------------------------------------------------
+
+  /// CLEANING
+
+  // --------------------
+    group('replaceMapInMapsWithSameIDField tests', () {
+
+    test('Test case 1: baseMaps is empty, should return empty list', () {
+      final List<Map<String, dynamic>> baseMaps = <Map<String, dynamic>>[];
+      final Map<String, dynamic> mapToReplace = {'id': 1, 'name': 'John'};
+      final List<Map<String, dynamic>> result = Mapper.replaceMapInMapsWithSameIDField(
+        baseMaps: baseMaps,
+        mapToReplace: mapToReplace,
+      );
+      expect(result, isEmpty);
+    });
+
+    test('Test case 2: mapToReplace is null, should return baseMaps unchanged', () {
+      final List<Map<String, dynamic>> baseMaps = <Map<String, dynamic>>[
+        {'id': 1, 'name': 'John'},
+        {'id': 2, 'name': 'Jane'},
+        {'id': 3, 'name': 'Bob'},
+      ];
+      const Map<String, dynamic> mapToReplace = null;
+      final List<Map<String, dynamic>> result = Mapper.replaceMapInMapsWithSameIDField(
+        baseMaps: baseMaps,
+        mapToReplace: mapToReplace,
+      );
+      expect(result, baseMaps);
+    });
+
+    test('Test case 3: idFieldName not found, should return baseMaps unchanged', () {
+      final List<Map<String, dynamic>> _baseMaps = <Map<String, dynamic>>[
+        {'id': 1, 'name': 'John'},
+        {'id': 2, 'name': 'Jane'},
+        {'id': 3, 'name': 'Bob'},
+      ];
+      final Map<String, dynamic> _mapToReplace = {'id': 2, 'name': 'Jane Doe'};
+      final List<Map<String, dynamic>> _result = Mapper.replaceMapInMapsWithSameIDField(
+        baseMaps: _baseMaps,
+        mapToReplace: _mapToReplace,
+        idFieldName: 'identity',
+      );
+      expect(_result, _baseMaps);
+    });
+
+    test('Test case 4: idFieldName found, should replace map in baseMaps', () {
+
+      final List<Map<String, dynamic>> _baseMaps = <Map<String, dynamic>>[
+        {'id': 1, 'name': 'John'},
+        {'id': 2, 'name': 'Jane'},
+        {'id': 3, 'name': 'Bob'},
+      ];
+      final Map<String, dynamic> _mapToReplace = {'id': 2, 'name': 'Jane Doe'};
+      final List<Map<String, dynamic>> _expected = <Map<String, dynamic>>[
+        {'id': 1, 'name': 'John'},
+        {'id': 2, 'name': 'Jane Doe'},
+        {'id': 3, 'name': 'Bob'},
+      ];
+      final List<Map<String, dynamic>> _result = Mapper.replaceMapInMapsWithSameIDField(
+        baseMaps: _baseMaps,
+        mapToReplace: _mapToReplace,
+      );
+
+      expect(_result, _expected);
+    });
+
+    test('Test case 5: mapToReplace is not present in baseMaps, should return baseMaps unchanged', () {
+      final List<Map<String, dynamic>> _baseMaps = <Map<String, dynamic>>[
+        {'id': 1, 'name': 'John'},
+        {'id': 3, 'name': 'Bob'},
+      ];
+      final Map<String, dynamic> _mapToReplace = {'id': 2, 'name': 'Jane Doe'};
+
+      final List<Map<String, dynamic>> _result = Mapper.replaceMapInMapsWithSameIDField(
+        baseMaps: _baseMaps,
+        mapToReplace: _mapToReplace,
+      );
+      expect(_result, _baseMaps);
+    });
+
   });
   // -----------------------------------------------------------------------------
 
@@ -701,3 +789,4 @@ void main() {
   // -----------------------------------------------------------------------------
   void f() {}
 }
+

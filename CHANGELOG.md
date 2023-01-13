@@ -1,3 +1,8 @@
+## 0.0.3
+
+* fixed replaceMapInMapsWithSameIDField method after adding ai generated tests
+
+
 ## 0.0.2
 
 * Added Ai generated method tests, but still not finished, 16 methods still not tested by ai but tested and works 

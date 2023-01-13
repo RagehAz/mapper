@@ -663,36 +663,43 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static List<Map<String, dynamic>> replaceMapInMapsWithSameIDField({
     @required List<Map<String, dynamic>> baseMaps,
     @required Map<String, dynamic> mapToReplace,
     String idFieldName = 'id',
   }){
-    List<Map<String, dynamic>> _output = <Map<String, dynamic>>[];
+    final List<Map<String, dynamic>> _output = <Map<String,dynamic>>[...?baseMaps];
 
     // Mapper.blogMap(mapToReplace, invoker: 'replaceMapInMapsWithSameIDField');
 
     /// Note : if baseMaps is empty, there will be nothing to replace ya zaki
     if (checkCanLoopList(baseMaps) == true && mapToReplace != null){
 
-      _output = <Map<String,dynamic>>[...baseMaps];
-
       final int _index = _output.indexWhere((map){
-        final bool _condition = map[idFieldName] == mapToReplace[idFieldName];
-        return _condition;
+
+        final dynamic _baseIDValue = map[idFieldName];
+        final dynamic _replaceIDValue = mapToReplace[idFieldName];
+
+        if (_baseIDValue != null && _replaceIDValue != null){
+          return _baseIDValue == _replaceIDValue;
+        }
+        else {
+          return false;
+        }
+
       });
 
       /// IF FOUND
       if (_index != -1){
-        // blog('replaceMapInMapsWithSameIDField : found map to replace at index $_index');
+        // blog('replaceMapInMapsWithSameIDField : found map to replace at index $_index : '
+        //     'idFieldName : $idFieldName');
         _output.removeAt(_index);
         _output.insert(_index, mapToReplace);
       }
       // else {
-      //   blog('replaceMapInMapsWithSameIDField : did not find this map');
+        // blog('replaceMapInMapsWithSameIDField : did not find this map : $_index');
       // }
-
 
     }
 
