@@ -1688,6 +1688,17 @@ void main() {
       expect(result, false);
     });
     // --------------------
+    final List<Map<String, dynamic>> _listOfMaps = <Map<String, dynamic>>[
+      <String, dynamic>{
+        'id': 'a',
+        'name': 'Ahmad',
+      },
+      <String, dynamic>{
+        'id': 'b',
+        'name': 'meshmesh',
+      },
+    ];
+    // --------------------
     test('field is null', () {
       final listOfMaps = [
         {'field1': 'value1', 'field2': 'value2'},
@@ -1719,7 +1730,43 @@ void main() {
 
     });
     // --------------------
+    test('correct input id = a', () {
+      final bool _result = Mapper.checkMapsContainValue(
+        maps: _listOfMaps,
+        field: 'id',
+        value: 'a',
+      );
+      expect(_result, true);
+    });
+    // --------------------
+    test('in-correct input id = c', () {
+      final bool _result = Mapper.checkMapsContainValue(
+        maps: _listOfMaps,
+        field: 'id',
+        value: 'c',
+      );
+      expect(_result, false);
+    });
+    // --------------------
+    test('in-correct input id = null', () {
+      final bool _result = Mapper.checkMapsContainValue(
+        maps: _listOfMaps,
+        field: 'id',
+        value: null,
+      );
+      expect(_result, false);
+    });
+    // --------------------
+    test('in-correct field = koko, input = toto', () {
+      final bool _result = Mapper.checkMapsContainValue(
+        maps: _listOfMaps,
+        field: 'koko',
+        value: 'toto',
+      );
+      expect(_result, false);
+    });
+    // --------------------
   });
   // -----------------------------------------------------------------------------
-  // void f() {}
+  /// void f() {}
 }
