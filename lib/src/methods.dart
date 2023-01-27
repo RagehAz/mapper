@@ -1,11 +1,6 @@
 part of mapper;
 
-enum InsertionDuplicity {
-  dontInsert,
-  replace,
-}
-
-/// => TAMAM
+/// => AI TESTED
 class Mapper {
   // -----------------------------------------------------------------------------
 
