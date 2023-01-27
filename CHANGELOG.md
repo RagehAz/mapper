@@ -1,3 +1,7 @@
+## 0.0.5
+
+* all methods are ai tested
+
 ## 0.0.4
 
 * fixed plenty of hidden cases and bugs thanks to ai

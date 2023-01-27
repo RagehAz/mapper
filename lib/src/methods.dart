@@ -516,11 +516,13 @@ class Mapper {
     Map<String, dynamic> _result = <String, dynamic>{};
 
     if (map != null){
-
       _result = map;
+    }
+
+    if (key != null){
 
       /// PAIR IS NULL
-      if (map[key] == null){
+      if (_result[key] == null){
         _result[key] = value;
         // _result.putIfAbsent(key, () => value);
       }
@@ -1327,7 +1329,7 @@ class Mapper {
   /// MAP<STRING, STRING> STUFF
 
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static List<String> getKeysHavingThisValue({
     @required Map<String, String> map,
     @required String value,
@@ -1357,35 +1359,32 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
-  static Map<String, String> _insertPairInMapWithStringValue({
+  /// AI TESTED
+  static Map<String, String> insertPairInMapWithStringValue({
     @required Map<String, String> map,
     @required String key,
     @required String value,
-    @required bool replaceDuplicateKey, // otherwise will keep existing pair
+    @required bool overrideExisting, // otherwise will keep existing pair
   }) {
 
     Map<String, String> _result = <String, String>{};
 
     if (map != null){
+      _result = map;
+    }
 
-      _result = _result..addAll(map);
+    if (key != null){
 
-      final String _existingValue = map[key];
-
-      /// IF KEY IS Absent
-      if (_existingValue == null){
-        // _result.putIfAbsent(key, () => value);
+      /// PAIR IS NULL
+      if (_result[key] == null){
         _result[key] = value;
       }
 
-      /// IF KEY IS ALREADY PRESENT
+      /// PAIR HAS VALUE
       else {
-
-        if (replaceDuplicateKey == true){
+        if (overrideExisting == true){
           _result[key] = value;
         }
-
       }
 
     }
@@ -1393,7 +1392,7 @@ class Mapper {
     return _result;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static Map<String, String> combineStringStringMap({
     @required Map<String, String> baseMap,
     @required Map<String, String> insert,
@@ -1413,11 +1412,11 @@ class Mapper {
 
           for (final String key in _keys){
 
-            _output = _insertPairInMapWithStringValue(
+            _output = insertPairInMapWithStringValue(
               map: _output,
               key: key,
               value: insert[key],
-              replaceDuplicateKey: replaceDuplicateKeys,
+              overrideExisting: replaceDuplicateKeys,
             );
 
           }
@@ -1431,16 +1430,42 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// TESTED : WORKS PERFECT : TASK : TO BE TESTED BY AI
+  /// AI TESTED
   static Map<String, String> getStringStringMapFromImmutableMapStringObject(dynamic object){
 
     Map<String, String> _output = {};
 
     if (object != null){
 
-      // blog('1 - FUCK : object ${object.runtimeType}');
+      final String _runTime = object.runtimeType.toString();
+      const String _mapType0 = 'ImmutableMap<String, Object?>';
+      const String _mapType00 = 'ImmutableMap<String, Object>';
+      const String _mapType1 = 'Map<String, Object?>';
+      const String _mapType2 = 'Map<String, Object>';
+      const String _mapType3 = 'Map<String, dynamic?>';
+      const String _mapType4 = 'Map<String, dynamic>';
+      const String _mapType5 = '_InternalLinkedHashMap<String, Object?>';
+      const String _mapType6 = '_InternalLinkedHashMap<String, Object>';
+      const String _mapType7 = '_InternalLinkedHashMap<String, dynamic?>';
+      const String _mapType8 = '_InternalLinkedHashMap<String, dynamic>';
+      const String _mapType9 = '_InternalLinkedHashMap<String, String>';
+      const String _mapType10 = '_InternalLinkedHashMap<String, String?>';
 
-      if (object.runtimeType.toString() == 'ImmutableMap<String, Object?>'){
+      final bool _canContinue = _runTime == _mapType0 ||
+                                _runTime == _mapType00 ||
+                                _runTime == _mapType1 ||
+                                _runTime == _mapType2 ||
+                                _runTime == _mapType3 ||
+                                _runTime == _mapType4 ||
+                                _runTime == _mapType5 ||
+                                _runTime == _mapType6 ||
+                                _runTime == _mapType7 ||
+                                _runTime == _mapType8 ||
+                                _runTime == _mapType9 ||
+                                _runTime == _mapType10;
+
+
+      if (_canContinue == true){
 
         final Map _map =  object;
         // blog('3 - FUCK : _map : ${_map.runtimeType}');
@@ -1452,11 +1477,11 @@ class Mapper {
 
             final String _value = _map[key] is String ? _map[key] : _map[key].toString();
 
-            _output = _insertPairInMapWithStringValue(
+            _output = insertPairInMapWithStringValue(
               map: _output,
               key: key,
               value: _value,
-              replaceDuplicateKey: true,
+              overrideExisting: true,
             );
 
           }
@@ -1470,11 +1495,6 @@ class Mapper {
       }
 
     }
-
-    // blog('4 - getStringStringMapFromImmutableMapStringObject : _output ${_output.runtimeType}');
-    // blogMap(_output);
-
-    // assert(_output != null, 'DO NOT CONTINUE BITCH');
 
     return _output;
   }

@@ -64,10 +64,10 @@ void main() {
     });
   // -----------------------------------------------------------------------------
 
-  /// insertMapInMap
+  /// insertPairInMap
 
   // --------------------
-  group('insertMapInMap', () {
+  group('insertPairInMap', () {
     // --------------------
     /// AI GENERATED
     test('insertPairInMap', () {
@@ -114,7 +114,7 @@ void main() {
         value: 30,
       );
 
-      expect(result, {});
+      expect(result, {'age': 30});
     });
     // --------------------
     /// AI GENERATED
@@ -1768,5 +1768,353 @@ void main() {
     // --------------------
   });
   // -----------------------------------------------------------------------------
-  /// void f() {}
+
+  /// getKeysHavingThisValue
+
+  // --------------------
+  group('getKeysHavingThisValue', () {
+
+    test('returns empty list when map is null', () {
+      final List<String> result = Mapper.getKeysHavingThisValue(map: null, value: 'test');
+      expect(result, isEmpty);
+    });
+
+    test('returns empty list when value is null', () {
+      final Map<String, String> testMap = {'key1': 'value1', 'key2': 'value2'};
+      final List<String> result = Mapper.getKeysHavingThisValue(map: testMap, value: null);
+      expect(result, isEmpty);
+    });
+
+    test('returns correct keys when value is present in map', () {
+      final Map<String, String> testMap = {'key1': 'value1', 'key2': 'value2', 'key3': 'value1'};
+      final List<String> result = Mapper.getKeysHavingThisValue(map: testMap, value: 'value1');
+      expect(result, ['key1', 'key3']);
+    });
+
+    test('returns empty list when value is not present in map', () {
+      final Map<String, String> testMap = {'key1': 'value1', 'key2': 'value2'};
+      final List<String> result = Mapper.getKeysHavingThisValue(map: testMap, value: 'value3');
+      expect(result, isEmpty);
+    });
+
+    test('returns empty list when Mapper.checkCanLoopList returns false', () {
+      final Map<String, String> testMap = {'key1': 'value1', 'key2': 'value2'};
+      final List<String> result = Mapper.getKeysHavingThisValue(map: testMap, value: 'value3');
+      expect(result, isEmpty);
+    });
+
+  });
+  // -----------------------------------------------------------------------------
+
+  /// insertPairInMapWithStringValue
+
+  // --------------------
+  group('insertPairInMapWithStringValue', () {
+
+    test('inserts a new key-value pair into the map', () {
+      final Map<String, String> map = {'key1': 'value1'};
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: 'key2',
+        value: 'value2',
+        overrideExisting: true,
+      );
+      expect(result, {'key1': 'value1', 'key2': 'value2'});
+    });
+
+    test('overrides an existing key-value pair in the map', () {
+      final Map<String, String> map = {'key1': 'value1'};
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: 'key1',
+        value: 'new value',
+        overrideExisting: true,
+      );
+      expect(result, {'key1': 'new value'});
+    });
+
+    test('keeps an existing key-value pair in the map', () {
+      final Map<String, String> map = {'key1': 'value1'};
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: 'key1',
+        value: 'new value',
+        overrideExisting: false,
+      );
+      expect(result, {'key1': 'value1'});
+    });
+
+    test('inserts a new key-value pair if the input map is null', () {
+
+      const Map<String, String> map = null;
+
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: 'key1',
+        value: 'value1',
+        overrideExisting: true,
+      );
+      expect(result, {'key1': 'value1'});
+    });
+
+    test('inserts a new key-value pair if the key is null', () {
+      final Map<String, String> map = {};
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: null,
+        value: 'value1',
+        overrideExisting: true,
+      );
+      expect(result, {});
+    });
+
+    test('inserts a new key-value pair if the value is null', () {
+      final Map<String, String> map = {};
+      final Map<String, String> result = Mapper.insertPairInMapWithStringValue(
+        map: map,
+        key: 'key1',
+        value: null,
+        overrideExisting: true,
+      );
+      expect(result, {'key1': null});
+    });
+
+  });
+  // -----------------------------------------------------------------------------
+
+  /// combineStringStringMap
+
+  // --------------------
+  group('combineStringStringMap', () {
+
+    test('combines two maps', () {
+      final Map<String, String> baseMap = {'key1': 'value1'};
+      final Map<String, String> insert = {'key2': 'value2'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: true,
+      );
+      expect(result, {'key1': 'value1', 'key2': 'value2'});
+    });
+
+    test('overrides duplicate keys in the base map', () {
+      final Map<String, String> baseMap = {'key1': 'value1'};
+      final Map<String, String> insert = {'key1': 'new value'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: true,
+      );
+      expect(result, {'key1': 'new value'});
+    });
+
+    test('keeps duplicate keys in the base map', () {
+      final Map<String, String> baseMap = {'key1': 'value1'};
+      final Map<String, String> insert = {'key1': 'new value'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: false,
+      );
+      expect(result, {'key1': 'value1'});
+    });
+
+    test('returns an empty map if baseMap is null', () {
+      const Map<String, String> baseMap = null;
+      final Map<String, String> insert = {'key1': 'value1'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: true,
+      );
+      expect(result, {});
+    });
+
+    test('returns the baseMap if insert is null', () {
+      final Map<String, String> baseMap = {'key1': 'value1'};
+      const Map<String, String> insert = null;
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: true,
+      );
+      expect(result, baseMap);
+    });
+
+    test('inserts new key-value pairs and replaces existing ones if replaceDuplicateKeys is true', () {
+      final Map<String, String> baseMap = {'key1': 'value1', 'key2': 'value2'};
+      final Map<String, String> insert = {'key3': 'value3', 'key2': 'new_value2'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: true,
+      );
+      expect(result, {'key1': 'value1', 'key2': 'new_value2', 'key3': 'value3'});
+    });
+
+    test('inserts new key-value pairs and keeps existing ones if replaceDuplicateKeys is false', () {
+      final Map<String, String> baseMap = {'key1': 'value1', 'key2': 'value2'};
+      final Map<String, String> insert = {'key3': 'value3', 'key2': 'new_value2'};
+      final Map<String, String> result = Mapper.combineStringStringMap(
+        baseMap: baseMap,
+        insert: insert,
+        replaceDuplicateKeys: false,
+      );
+      expect(result, {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'});
+    });
+
+  });
+  // -----------------------------------------------------------------------------
+
+  /// getStringStringMapFromImmutableMapStringObject
+
+  // --------------------
+  group('getStringStringMapFromImmutableMapStringObject tests: ', () {
+
+    test('Should return an empty map if input is null', () {
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(null);
+      expect(output, {});
+    });
+
+    test('Should return a map with string keys and string values if input is a Map<String, Object>', () {
+      final Map<String, Object> input = {
+        'key1': 'value1',
+        'key2': 2,
+        'key3': true,
+      };
+      final Map<String, String> output = Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': '2', 'key3': 'true'});
+    });
+
+    test('Should return the same map if input is already a Map<String, String>', () {
+      final Map<String, String> input = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, input);
+    });
+
+    test('Test with valid input: Map<String, Object>', () {
+      final Map<String, Object> input = {
+        'key1': 'value1',
+        'key2': 2,
+        'key3': true,
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': '2', 'key3': 'true'});
+    });
+
+    test('Test with valid input: Map<String, dynamic>', () {
+      final Map<String, dynamic> input = {
+        'key1': 'value1',
+        'key2': 2,
+        'key3': true,
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': '2', 'key3': 'true'});
+    });
+
+    test('Test with valid input: _InternalLinkedHashMap<String, Object>', () {
+      final Map<String, Object> input = <String, Object>{};
+      input['key1'] = 'value1';
+      input['key2'] = 2;
+      input['key3'] = true;
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': '2', 'key3': 'true'});
+    });
+
+    test('Test with valid input: _InternalLinkedHashMap<String, dynamic>', () {
+      final Map<String, dynamic> input = <String, dynamic>{};
+      input['key1'] = 'value1';
+      input['key2'] = 2;
+      input['key3'] = true;
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': '2', 'key3': 'true'});
+    });
+
+    test('Test with valid input: _InternalLinkedHashMap<String, String>', () {
+      final Map<String, String> input = <String, String>{};
+      input['key1'] = 'value1';
+      input['key2'] = 'value2';
+      input['key3'] = 'value3';
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, {'key1': 'value1', 'key2': 'value2', 'key3': 'value3'});
+    });
+
+    test('Test Case 1: input is valid ImmutableMap<String, Object>', () {
+      final Map<String, Object> input = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> expectedOutput = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, expectedOutput);
+    });
+
+    test('Test Case 2: input is valid Map<String, Object>', () {
+      final Map<String, Object> input = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> expectedOutput = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, expectedOutput);
+    });
+
+    test('Test Case 3: input is valid Map<String, dynamic>', () {
+      final Map<String, dynamic> input = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> expectedOutput = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, expectedOutput);
+    });
+
+    test('Test Case 4: input is valid Map<String, dynamic?>', () {
+      final Map<String, dynamic> input = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> expectedOutput = {
+        'key1': 'value1',
+        'key2': 'value2',
+        'key3': 'value3',
+      };
+      final Map<String, String> output =
+          Mapper.getStringStringMapFromImmutableMapStringObject(input);
+      expect(output, expectedOutput);
+    });
+
+  });
+  // -----------------------------------------------------------------------------
 }
