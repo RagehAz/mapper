@@ -1234,7 +1234,7 @@ class Mapper {
 
     if (map != null){
 
-      blog('$invoker ~~~> <String, dynamic>{');
+      _blog('$invoker ~~~> <String, dynamic>{');
 
       final List<dynamic> _keys = map.keys.toList();
       final List<dynamic> _values = map.values.toList();
@@ -1246,29 +1246,32 @@ class Mapper {
           listLength: _keys.length,
         );
 
-        blog('         $_index. ${_keys[i]} : <${_values[i].runtimeType}>( ${_values[i]} ), ');
+        _blog('         $_index. ${_keys[i]} : <${_values[i].runtimeType}>( ${_values[i]} ), ');
       }
 
-      blog('      }.........Length : ${_keys.length} keys <~~~');
+      _blog('      }.........Length : ${_keys.length} keys <~~~');
 
     }
 
     else {
-      blog('MAP IS NULL');
+      _blog('MAP IS NULL');
     }
 
   }
   // --------------------
   /// MANUALLY TESTED : WORKS PERFECT
-  static void blogMaps(List<Map<dynamic, dynamic>> maps, {String invoker}) {
+  static void blogMaps(List<Map<dynamic, dynamic>> maps, {String invoker = 'map'}) {
     if (checkCanLoopList(maps) == true) {
-      for (final Map<dynamic, dynamic> map in maps) {
-        blogMap(map, invoker: invoker);
+      for (int i = 0; i < maps.length; i++) {
+        final Map<String, dynamic> map = maps[i];
+        blogMap(map,
+            invoker: '$i : $invoker',
+        );
       }
     }
 
     else {
-      blog('No maps to blog ( $invoker )');
+      _blog('No maps to blog ( $invoker )');
     }
   }
   // --------------------
@@ -1279,20 +1282,20 @@ class Mapper {
     @required String invoker,
   }){
 
-    blog('blogMapsListsDifferences : START');
+    _blog('blogMapsListsDifferences : START');
 
     if (maps1 == null && maps2 == null){
-      blog('both maps lists are null');
+      _blog('both maps lists are null');
     }
 
     if (maps1 == [] && maps2 == []){
-      blog('both maps lists are empty');
+      _blog('both maps lists are empty');
     }
 
     if (checkCanLoopList(maps1) == true && checkCanLoopList(maps2) == true){
 
       if (maps1.length != maps2.length) {
-        blog('maps1.length != maps2.length');
+        _blog('maps1.length != maps2.length');
       }
 
       else {
@@ -1304,12 +1307,12 @@ class Mapper {
           );
 
           if (_mapsAreIdentical == false) {
-            blog('items at index ( $i ) do not match : ( ${maps1[i]} ) <=> ( ${maps2[i]} )');
+            _blog('items at index ( $i ) do not match : ( ${maps1[i]} ) <=> ( ${maps2[i]} )');
             break;
           }
 
           else {
-            blog('all maps are identical');
+            _blog('all maps are identical');
           }
 
         }
@@ -1317,7 +1320,7 @@ class Mapper {
 
     }
 
-    blog('blogMapsListsDifferences : END');
+    _blog('blogMapsListsDifferences : END');
   }
   // -----------------------------------------------------------------------------
 
@@ -1524,5 +1527,29 @@ class Mapper {
          //   return res;
          // }
        */
+  // -----------------------------------------------------------------------------
+
+  /// BLOG
+
+  // --------------------
+  static void _blog(dynamic msg){
+
+  assert((){
+    // log(msg.toString());
+    // ignore: avoid_print, noop_primitive_operations
+    print(msg?.toString());
+    return true;
+  }(), '_');
+
+  /// NOUR IDEA
+  /*
+    extension Printer on dynamic {
+      void log() {
+        return dev.log(toString());
+      }
+    }
+     */
+
+}
   // -----------------------------------------------------------------------------
 }

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'src/helpers.dart';
+import 'package:numeric/numeric.dart';
 // -----------------------------------------------------------------------------
 part 'src/methods.dart';
 // -----------------------------------------------------------------------------
