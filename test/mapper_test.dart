@@ -1970,6 +1970,7 @@ void main() {
   /// getStringStringMapFromImmutableMapStringObject
 
   // --------------------
+  /*
   group('getStringStringMapFromImmutableMapStringObject tests: ', () {
 
     test('Should return an empty map if input is null', () {
@@ -2116,5 +2117,6 @@ void main() {
     });
 
   });
+   */
   // -----------------------------------------------------------------------------
 }

@@ -583,7 +583,7 @@ class Mapper {
     Map<String, dynamic> _output = {};
 
     if (baseMap != null){
-      _output = baseMap;
+      _output.addAll(baseMap);
     }
 
     if (insert != null){
@@ -1428,7 +1428,7 @@ class Mapper {
     return _output;
   }
   // --------------------
-  /// AI TESTED
+  /// TASK : TEST ME
   static Map<String, String> getStringStringMapFromImmutableMapStringObject(dynamic object){
 
     Map<String, String> _output = {};
