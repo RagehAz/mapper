@@ -508,10 +508,10 @@ class Mapper {
     bool overrideExisting = false,
   }) {
 
-    Map<String, dynamic> _result = <String, dynamic>{};
+    final Map<String, dynamic> _result = <String, dynamic>{};
 
     if (map != null){
-      _result = map;
+      _result.addAll(map);
     }
 
     if (key != null){
